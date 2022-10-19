@@ -16,6 +16,9 @@ jobs:
       CI_VERBOSE: true
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          token: ${{ secrets.GH_TOKEN_CLONE_PRIVATE }}
       - name: Install Go
         uses: actions/setup-go@v3
         with:
