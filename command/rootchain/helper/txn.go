@@ -24,7 +24,7 @@ var (
 	// are deterministic
 	defKey *wallet.Key
 
-	jrpcClientOnce sync.Once
+	jrpcClientLock sync.Mutex
 	jsonRPCClient  *jsonrpc.Client
 )
 
@@ -150,22 +150,25 @@ func FundAccount(account types.Address) (types.Hash, error) {
 	return types.BytesToHash(receipt.TransactionHash.Bytes()), nil
 }
 
-func getJSONRPCClient() (client *jsonrpc.Client, err error) {
-	jrpcClientOnce.Do(func() {
-		var ipAddr string
+func getJSONRPCClient() (*jsonrpc.Client, error) {
+	jrpcClientLock.Lock()
+	defer jrpcClientLock.Unlock()
 
-		ipAddr, err = ReadRootchainIP()
+	if jsonRPCClient == nil {
+		ipAddr, err := ReadRootchainIP()
 		if err != nil {
-			return
+			return nil, err
 		}
 
-		client, err = jsonrpc.NewClient(ipAddr)
+		client, err := jsonrpc.NewClient(ipAddr)
 		if err != nil {
-			jsonRPCClient = client
+			return nil, err
 		}
-	})
 
-	return jsonRPCClient, err
+		jsonRPCClient = client
+	}
+
+	return jsonRPCClient, nil
 }
 
 func waitForReceipt(client *jsonrpc.Eth, hash ethgo.Hash) (*ethgo.Receipt, error) {

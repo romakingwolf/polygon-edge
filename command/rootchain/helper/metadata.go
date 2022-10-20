@@ -22,8 +22,8 @@ var (
 	// BN256G2Address is an address of BN256G2Address.sol smart contract
 	BN256G2Address = types.StringToAddress("0x947a581B2713F58A8145201DA41BCb6aAE90196B")
 
-	RootchainIdNotFound    = errors.New("rootchain not found")
-	rootchainPortBindError = errors.New("port 8545 is not bind with localhost")
+	ErrRootchainNotFound = errors.New("rootchain not found")
+	ErrRootchainPortBind = errors.New("port 8545 is not bind with localhost")
 )
 
 func GetRootchainID() (string, error) {
@@ -43,7 +43,7 @@ func GetRootchainID() (string, error) {
 		}
 	}
 
-	return "", RootchainIdNotFound
+	return "", ErrRootchainNotFound
 }
 
 func ReadRootchainIP() (string, error) {
@@ -64,7 +64,7 @@ func ReadRootchainIP() (string, error) {
 
 	ports, ok := inspect.HostConfig.PortBindings["8545/tcp"]
 	if !ok || len(ports) == 0 {
-		return "", rootchainPortBindError
+		return "", ErrRootchainPortBind
 	}
 
 	return fmt.Sprintf("http://%s:%s", ports[0].HostIP, ports[0].HostPort), nil

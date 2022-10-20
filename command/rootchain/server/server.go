@@ -74,7 +74,7 @@ func runCommand(cmd *cobra.Command, _ []string) {
 	closeCh := make(chan struct{})
 
 	// Check if the client is already running
-	if cid, err := helper.GetRootchainID(); !errors.Is(err, helper.RootchainIdNotFound) {
+	if cid, err := helper.GetRootchainID(); !errors.Is(err, helper.ErrRootchainNotFound) {
 		if err != nil {
 			outputter.SetError(err)
 		} else if cid != "" {
