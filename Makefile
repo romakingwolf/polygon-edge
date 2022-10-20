@@ -61,4 +61,4 @@ stop-local:
 
 .PHONY: compile-core-contracts
 compile-core-contracts:
-	cd core-contracts && npm install && npm run compile && cd ..
+	cd core-contracts && (npm install && npm run compile)
