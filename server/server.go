@@ -246,38 +246,38 @@ func NewServer(config *Config) (*Server, error) {
 	if err := m.blockchain.ComputeGenesis(); err != nil {
 		return nil, err
 	}
-
+	fmt.Printf("server test 0\n")
 	// initialize data in consensus layer
 	if err := m.consensus.Initialize(); err != nil {
 		return nil, err
 	}
-
+	fmt.Printf("server test 1\n")
 	// setup and start grpc server
 	if err := m.setupGRPC(); err != nil {
 		return nil, err
 	}
-
+	fmt.Printf("server test 2\n")
 	if err := m.network.Start(); err != nil {
 		return nil, err
 	}
-
+	fmt.Printf("server test 3\n")
 	// setup and start jsonrpc server
 	if err := m.setupJSONRPC(); err != nil {
 		return nil, err
 	}
-
+	fmt.Printf("server test 4\n")
 	// restore archive data before starting
 	if err := m.restoreChain(); err != nil {
 		return nil, err
 	}
-
+	fmt.Printf("server test 5\n")
 	// start consensus
 	if err := m.consensus.Start(); err != nil {
 		return nil, err
 	}
-
+	fmt.Printf("server test 6\n")
 	m.txpool.Start()
-
+	fmt.Printf("server test 7\n")
 	return m, nil
 }
 
