@@ -67,6 +67,7 @@ func (i *backendIBFT) InsertBlock(
 
 	// Save the block locally
 	if err := i.blockchain.WriteBlock(newBlock, "consensus"); err != nil {
+		i.logger.Info("test")
 		i.logger.Error("cannot write block", "err", err)
 
 		return
