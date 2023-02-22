@@ -879,7 +879,7 @@ func (b *Blockchain) executeBlockTransactions(block *types.Block) (*BlockResult,
 func (b *Blockchain) WriteBlock(block *types.Block, source string) error {
 	b.writeLock.Lock()
 	defer b.writeLock.Unlock()
-
+	b.logger.Info("test 1")
 	if block.Number() <= b.Header().Number {
 		b.logger.Info("block already inserted", "block", block.Number(), "source", source)
 
@@ -887,11 +887,11 @@ func (b *Blockchain) WriteBlock(block *types.Block, source string) error {
 	}
 
 	header := block.Header
-
+	b.logger.Info("test 2")
 	if err := b.writeBody(block); err != nil {
 		return err
 	}
-
+	b.logger.Info("test 3")
 	// Write the header to the chain
 	evnt := &Event{Source: source}
 	if err := b.writeHeaderImpl(evnt, header); err != nil {
@@ -903,14 +903,14 @@ func (b *Blockchain) WriteBlock(block *types.Block, source string) error {
 	if receiptsErr != nil {
 		return receiptsErr
 	}
-
+	b.logger.Info("test 4")
 	// write the receipts, do it only after the header has been written.
 	// Otherwise, a client might ask for a header once the receipt is valid,
 	// but before it is written into the storage
 	if err := b.db.WriteReceipts(block.Hash(), blockReceipts); err != nil {
 		return err
 	}
-
+	b.logger.Info("test 5")
 	// update snapshot
 	if err := b.consensus.ProcessHeaders([]*types.Header{header}); err != nil {
 		return err
