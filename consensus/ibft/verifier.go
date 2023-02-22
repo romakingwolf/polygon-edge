@@ -3,6 +3,7 @@ package ibft
 import (
 	"bytes"
 	"encoding/hex"
+	"fmt"
 
 	"github.com/0xPolygon/go-ibft/messages"
 	protoIBFT "github.com/0xPolygon/go-ibft/messages/proto"
@@ -171,16 +172,16 @@ func (i *backendIBFT) extractProposer(header *types.Header) (types.Address, erro
 	if header.Number == 0 {
 		return types.ZeroAddress, nil
 	}
-
+	fmt.Printf("test block header number %d\n", header.Number)
 	signer, err := i.forkManager.GetSigner(header.Number)
 	if err != nil {
 		return types.ZeroAddress, err
 	}
-
+	fmt.Printf("test EcrecoverFromHeader\n")
 	proposer, err := signer.EcrecoverFromHeader(header)
 	if err != nil {
 		return types.ZeroAddress, err
 	}
-
+	fmt.Printf("test extractProposer end\n")
 	return proposer, nil
 }
