@@ -76,11 +76,11 @@ func NewSnapshotValidatorStore(
 		candidatesLock: sync.RWMutex{},
 		epochSize:      epochSize,
 	}
-
+	fmt.Printf("snapshot test 0\n")
 	if err := set.initialize(); err != nil {
 		return nil, err
 	}
-
+	fmt.Printf("snapshot test 1\n")
 	return set, nil
 }
 
@@ -186,9 +186,9 @@ func (s *SnapshotValidatorStore) Votes(height uint64) ([]*store.Vote, error) {
 
 // UpdateValidatorSet resets Snapshot with given validators at specified height
 func (s *SnapshotValidatorStore) UpdateValidatorSet(
-	// new validators to be overwritten
+// new validators to be overwritten
 	newValidators validators.Validators,
-	// the height from which new validators are used
+// the height from which new validators are used
 	fromHeight uint64,
 ) error {
 	snapshotHeight := fromHeight - 1
@@ -262,6 +262,7 @@ func (s *SnapshotValidatorStore) ProcessHeadersInRange(
 		}
 
 		if err := s.ProcessHeader(header); err != nil {
+			fmt.Printf("process header test %d\n", header.Number)
 			return err
 		}
 	}
