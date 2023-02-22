@@ -175,21 +175,21 @@ func (i *backendIBFT) Initialize() error {
 		i.operator = &operator{ibft: i}
 		proto.RegisterIbftOperatorServer(i.Grpc, i.operator)
 	}
-
+	fmt.Printf("ibft test 0\n")
 	// start the transport protocol
 	if err := i.setupTransport(); err != nil {
 		return err
 	}
-
+	fmt.Printf("ibft test 1\n")
 	// initialize fork manager
 	if err := i.forkManager.Initialize(); err != nil {
 		return err
 	}
-
+	fmt.Printf("ibft test 2\n")
 	if err := i.updateCurrentModules(i.blockchain.Header().Number + 1); err != nil {
 		return err
 	}
-
+	fmt.Printf("ibft test 3\n")
 	i.logger.Info("validator key", "addr", i.currentSigner.Address().String())
 
 	i.consensus = newIBFT(
