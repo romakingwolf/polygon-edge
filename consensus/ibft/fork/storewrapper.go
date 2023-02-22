@@ -1,6 +1,7 @@
 package fork
 
 import (
+	"fmt"
 	"path/filepath"
 
 	"github.com/0xPolygon/polygon-edge/consensus/ibft/signer"
@@ -51,16 +52,17 @@ func NewSnapshotValidatorStoreWrapper(
 	dirPath string,
 	epochSize uint64,
 ) (*SnapshotValidatorStoreWrapper, error) {
+	fmt.Printf("store wrapper test 0\n")
 	snapshotMeta, err := loadSnapshotMetadata(filepath.Join(dirPath, snapshotMetadataFilename))
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Printf("store wrapper test 1\n")
 	snapshots, err := loadSnapshots(filepath.Join(dirPath, snapshotSnapshotsFilename))
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Printf("store wrapper test 2\n")
 	snapshotStore, err := snapshot.NewSnapshotValidatorStore(
 		logger,
 		blockchain,
@@ -80,7 +82,7 @@ func NewSnapshotValidatorStoreWrapper(
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Printf("store wrapper test 3\n")
 	return &SnapshotValidatorStoreWrapper{
 		SnapshotValidatorStore: snapshotStore,
 		dirPath:                dirPath,
